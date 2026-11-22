@@ -1,4 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let mongoose = require("mongoose")
-let event = require("../models/kanban_board")
+let kanban = require("../models/kanban_board")
+
+
+module.exports = router;
