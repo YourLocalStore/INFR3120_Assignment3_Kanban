@@ -27,7 +27,7 @@ let kanbanModel = mongoose.Schema({
     }],
 },
 {
-    Collection: "Boards"
+    collection: "Boards"
 })
 
 module.exports = mongoose.model("kanban", kanbanModel)

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/bootstrap/dist/css/bootstrap.min.css' />
+    <link rel="stylesheet" href="/fontawesome-free-7.3.1-web/css/fontawesome.min.css">
+    <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<%- include ../partials/main_nav.ejs %>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 mt-3">
+                <h1 class="mb-3"><%= title %></h1>
+
+                <form class="form" method="post">
+                    <div class="form-group">
+                        <label for="colNameTextField">Task Name</label>
+                        <input type="text" 
+                                class="form-control mt-2" id="colNameTextField"
+                                placeholder="Enter the column name..." 
+                                name="kColName" 
+                                value="<%= colName %>" 
+                                required> 
+                    </div>
+
+                    <button class="btn btn-dark mt-3" type="submit">Submit</button>
+                    <a href="/boards" class="btn btn-warning mt-3">Go Back!</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</body>
+<%- include ../partials/footer.ejs %>
+
+</html>
