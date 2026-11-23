@@ -16,9 +16,4 @@ router.get('/contactus', function(req, res, next) {
   res.render('pages/contact', { title: 'Contact Us' });
 });
 
-/* GET sign in page. */
-router.get('/signin', function(req, res, next) {
-  res.render('pages/signin', { title: 'Sign In' });
-});
-
 module.exports = router;

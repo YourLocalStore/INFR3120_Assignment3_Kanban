@@ -211,7 +211,7 @@ router.get("/updatecolname/column/:colID", async(req, res, next) => {
 
         res.render("kanban/edit_colname", {
             title: "Update the Column Name",
-            colName: colToEdit.kanbanColName
+            colName: colToEdit.kanbanColumnName
         })
 
     } catch(err) {

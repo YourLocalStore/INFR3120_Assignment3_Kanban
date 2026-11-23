@@ -1,7 +1,40 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: "Inter";
+  font-size:14px;
 }
 
 a {
   color: #00B7FF;
+}
+
+/* This section is reserved for the header and footer sections of the page. */
+.navbar-brand img{
+  width:20rem;
+}
+
+.row .copyright a{
+  pointer-events: none;
+  color: white;
+}
+
+.social-col a{
+  color: #FFFFFF8C;  /* This is the default color used by the bootstrap navbar-dark for text. */
+  transition: 0.15s ease;
+}
+
+#bootstrap-overrides .social-col a:hover{
+  color:white;
+}
+
+#bootstrap-overrides .category-link, .test-col-link{
+  color: #FFFFFF8C;
+  transition: 0.15s ease;
+}
+
+#bootstrap-overrides .category-link:hover, .social-col:hover{
+  color:white
+}
+
+#bootstrap-overrides footer div .row a{
+  text-decoration: none;
 }

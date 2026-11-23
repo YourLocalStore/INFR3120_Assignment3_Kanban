@@ -1,24 +1,73 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
     <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/bootstrap/dist/css/bootstrap.min.css' />
     <link rel="stylesheet" href="/fontawesome-free-7.3.1-web/css/all.css">
     <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
-  </head>
 
-  <%- include ../partials/main_nav.ejs %>
-  <body>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12 mx-auto mt-4">
-          <h1><%= title %></h1>
-          <p>Welcome to <%= title %></p>          
-        </div>
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+  </head>
+    <body>
+    <%- include("../partials/main_nav.ejs") %>     
+      <!-- 
+        Describe a container here to contain all the content used for the page. 
+        Center it from both sides, and limit the width to 75% (w-75)
+
+        An article tag is used to hold the specific subject being talked about
+        in this page.
+      -->
+      <div class="container-fluid mt-4 mx-auto w-75">
+        <section>
+
+          <article>
+            <h1 class="mt-5"><%= title %></h1>
+            <p>A small guide on kanban boards and this project.</p>
+            <hr> <!-- This is used as a horizontal separator between content. -->
+
+            <p>
+              This web application is designed so that you can create your own kanban board.
+              Derived from the <a href="https://www.pmi.org/disciplined-agile/agile/whatisagile">Agile framework</a>, 
+              Kanban boards are a project management tool designed to visualize all of your individual work tasks 
+              and the specific stages that they are in. 
+              
+              <figure>
+                <figcaption class="blockquote-footer mt-3">
+                  Think of it like a board with sticky notes all around, categorizing their progress in columns.
+                </figcaption>
+              </figure>
+
+          </article>
+
+          <article>
+            <h1 class="mt-5">How to Use</h1>
+            <p>A guide on how to create, edit and view your board.</p>
+            <hr> <!-- This is used as a horizontal separator between content. -->
+
+            <p>
+              No sign-ins are required to get started. You just need to head to the "<a href="/boards">Boards</a>" page.
+              Once you've entered, just click the dark "+" button to create a new board!
+
+              <figure>
+                <figcaption class="blockquote-footer mt-3">
+                  You will first be prompted to enter a column name. This is to create your column and initialize your board.
+                  This button will also be used to create more columns for your board.
+                </figcaption>
+              </figure>
+
+              Congratulations! You've made your first column for your kanban board. You'll be greeted by a few extra buttons,
+              which will be listed down below:
+
+              
+            </p>
+
+          </article> 
+
+        </section>
       </div>
-    </div>
-  </body>
-  <%- include ../partials/footer.ejs %>
+
+    <%- include("../partials/footer.ejs") %>
+    </body>
+    
 </html>

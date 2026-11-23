@@ -7,23 +7,26 @@
     <link rel='stylesheet' href='/bootstrap/dist/css/bootstrap.min.css' />
     <link rel="stylesheet" href="/fontawesome-free-7.3.1-web/css/all.css">
     <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
   </head>
 
-  <%- include ../partials/main_nav.ejs %>
   <body>
-    <div class="container-fluid text-center">
+    <%- include ../partials/main_nav.ejs %>
+    <div class="container-fluid text-center d-flex justify-content-center align-items-center"
+          style="min-height: calc(100vh - 300px)">
       <div class="row">
 
-        <div class="col-12 mt-4 ">
+        <div class="col-12 mt-4">
           <h1><%= title %></h1>
-          <p>Welcome to <%= title %></p>   
+          <p class="fs-5">Create, edit and view your own kanban board!</p>   
           
           <a href="/boards" class="btn btn-primary">Get Started!</a>
-          <a href="/signin" class="btn btn-warning">Sign In</a>
+          <a href="/about" class="btn btn-secondary">Learn More</a>
         </div>
 
       </div>
     </div>
+    <%- include ../partials/footer.ejs %>
   </body>
-  <%- include ../partials/footer.ejs %>
 </html>
