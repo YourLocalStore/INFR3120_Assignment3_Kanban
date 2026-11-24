@@ -1,27 +1,87 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
-    <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
+    <link rel="stylesheet" href="/fontawesome-free-7.3.1-web/css/fontawesome.min.css">
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel='stylesheet' href='/bootstrap/dist/css/bootstrap.min.css' />
-    <link rel="stylesheet" href="/fontawesome-free-7.3.1-web/css/all.css">
-    <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel='stylesheet' href='/bootstrap/dist/css/bootstrap.min.css'/>
+    <script src="/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
   </head>
 
-  <%- include ../partials/main_nav.ejs %>
+  <%- include("../partials/main_nav.ejs") %>
   <body>
-    <div class="container-fluid">
+
+    <div class="contact-form container-fluid pt-3 pb-3 w-75 text-center">
       <div class="row">
-        <div class="col-12 mx-auto mt-4">
-          <h1><%= title %></h1>
-          <p>Welcome to <%= title %></p>
-          
+        <div class="pt-3 text-dark">
+          <h3>Contact Us!</h3>
+          <p>Have any comments? Let us know!</p>
         </div>
+      </div>
+
+      <div class="row bg-dark rounded">
+        <div class="col-12 col-md-6">
+          <div class="form-container pt-3 pb-3 text-white">
+            <form action="mailto:" 
+                  method="post" 
+                  enctype="text/plain"
+                  class="text-start">
+
+              <div class="form-group col-12 mb-3">
+                <label for="n-input" class="form-label">Name</label>
+                <input type="text" 
+                        class="form-control" 
+                        id="n-input"
+                        placeholder="Name" 
+                        required>
+              </div> 
+              
+              <div class="form-group col-12 mb-3">
+                <label for="email-input" class="form-label">Email Address</label>
+                <input type="email" 
+                        class="form-control" 
+                        id="email-input"
+                        placeholder="Email"  
+                        required>
+              </div>
+
+              <div class="form-group col-12 mb-3">
+                <label for="comment-input" class="form-label">Comments</label><br>
+                <textarea id="comment-input" 
+                          class="form-control w-100 mx-auto" style="min-height: 200px;"
+                          name="comments" placeholder="Questions, concerns, feedback..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-success">Submit</button>
+              <hr>
+
+            </form>
+
+            <div class="social-col col-12">
+              <p>Follow us here!</p>
+              <a href="https://github.com/YourLocalStore">
+                <i class="fa-brands fa-github fa-xl"></i> 
+              </a>
+
+              <a href="https://ca.linkedin.com/in/joshua-tuibuen-436338351">
+                <i class="fa-brands fa-linkedin fa-xl"></i>
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 rounded" 
+              style="background: linear-gradient(to left, black, transparent 50%), 
+                      url('/images/baltzericehat.jpg') no-repeat; 
+                      background-position: center; 
+                      background-size: cover;">
+        </div>
+
       </div>
     </div>
   </body>
-  <%- include ../partials/footer.ejs %>
+  <!-- Footer Import -->
+  <%- include("../partials/footer.ejs") %>
+  
 </html>
