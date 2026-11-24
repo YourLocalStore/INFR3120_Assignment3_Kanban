@@ -14,15 +14,14 @@
   <body>
     <%- include ../partials/main_nav.ejs %>
     <div class="container-fluid text-center d-flex justify-content-center align-items-center"
-          style="min-height: calc(100vh - 356px)">
+          style="min-height: calc(100vh - 356px)"> <!-- At least 100 viewport height, which is subtracted by some approximate height of the header + footer. -->
       <div class="row">
 
         <div class="col-12">
-          <h1><%= title %></h1>
-          <p class="fs-5">Create, edit and view your own kanban board!</p>   
-          
-          <a href="/boards" class="btn btn-primary">Get Started!</a>
-          <a href="/about" class="btn btn-secondary">Learn More</a>
+          <h1 style="font-size:50px;"><img src="/images/kb_logo.png" style="width: 100px"> <%= title %> </h1>
+          <p class="fs-5 mt-3">Create, edit and view your own kanban board!</p>   
+          <a href="/boards" class="btn btn-primary mt-3">Get Started!</a>
+          <a href="/about" class="btn btn-secondary mt-3">Learn More</a>
         </div>
 
       </div>

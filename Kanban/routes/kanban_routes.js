@@ -9,7 +9,7 @@ router.get("/boards", async(req, res, next) => {
     try{
         const userBoard = await kanban.find();
         res.render("kanban/boards", {
-            title: "Boards",
+            title: "Board",
             userBoard:userBoard
         })
     }
