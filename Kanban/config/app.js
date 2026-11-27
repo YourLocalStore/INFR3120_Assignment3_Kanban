@@ -15,6 +15,10 @@ let passport = require("passport")
 let passportLocal = require("passport-local")
 let flash = require("connect-flash")
 
+// https://www.passportjs.org/packages/passport-google-oauth20/
+let GoogleStrategy = require('passport-google-oauth20').Strategy;
+// let GitHubStrategy = require('passport-github2').Strategy;
+
 let app = express();
 
 const mongoose = require("mongoose")
@@ -34,6 +38,35 @@ app.use(session({
 }))
 
 let userModel = require("../models/user");
+
+app.use(flash());
+passport.serializeUser(userModel.serializeUser());
+passport.deserializeUser(userModel.deserializeUser());
+passport.use(userModel.createStrategy());
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "https://infr3120-assignment3-kanban.onrender.com/auth/google/callback"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+
+// passport.use(new GitHubStrategy({
+//     clientID: process.env.GITHUB_CLIENT_ID,
+//     clientSecret: process.env.GITHUB_CLIENT_SECRET,
+//     callbackURL: "http://127.0.0.1:3000/auth/github/callback"
+//   },
+//   function(accessToken, refreshToken, profile, done) {
+//     User.findOrCreate({ githubId: profile.id }, function (err, user) {
+//       return done(err, user);
+//     });
+//   }
+// ));
 
 app.use(flash());
 passport.serializeUser(userModel.serializeUser());

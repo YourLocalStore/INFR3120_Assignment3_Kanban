@@ -95,29 +95,43 @@ router.get('/logout', (req, res, next) => {
   res.redirect("/")
 })
 
+// Google Authentication
+router.get('/auth/google',
+  passport.authenticate('google', 
+    { scope: ['profile', 'email'] }
+  ))
+
+router.get('/auth/google/callback', 
+  passport.authenticate('google', {
+    failureRedirect: '/login'
+  }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/boards');
+  })
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('pages/index', { 
     title: 'Kanban Board Creator', 
     displayName: req.user ? req.user.displayName:""
-  });
-  
-});
+  })
+})
 
 /* GET about page. */
 router.get('/about', function(req, res, next) {
   res.render('pages/about', {
     title: 'About', 
     displayName: req.user ? req.user.displayName:""
-  });
-});
+  })
+})
 
 /* GET contact page. */
 router.get('/contactus', function(req, res, next) {
   res.render('pages/contact', { 
     title: 'Contact Us', 
     displayName: req.user ? req.user.displayName:""
-  });
-});
+  })
+})
 
 module.exports = router;

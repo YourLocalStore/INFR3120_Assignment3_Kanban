@@ -27,6 +27,14 @@ let User = mongoose.Schema({
         trim: true,
         required: "Display Name Required"      
     },
+    googleId: {
+        type: String,
+        sparse: true
+    },
+    githubId: {
+        type: String,
+        sparse: true
+    }
 },
 {
     Collection: "user"
