@@ -312,16 +312,18 @@ router.get("/updateboardname/board/:boardID", async(req, res, next) => {
             boardOwner: req.user._id
         })
 
-        res.render("kanban/edit_colname", {
+        res.render("kanban/edit_boardname", {
             title: "Update the Board Title",
             board: boardToFind,
+            boardName: boardToFind.boardName,
+            
             displayName: req.user ? req.user.displayName:"",
             boardOwner: req.user._id
         })
 
     } catch(err) {
         console.log(err)
-        res.render("kanban/addnew", {
+        res.render("kanban/edit_boardname", {
             title: "Error!",
             error: err
         })
@@ -347,7 +349,7 @@ router.post("/updateboardname/board/:boardID", async(req, res, next) => {
 
     } catch(err) {
         console.log(err)
-        res.render("kanban/addnew", {
+        res.render("kanban/edit_boardname", {
             title: "Error!",
             error: err
         })
