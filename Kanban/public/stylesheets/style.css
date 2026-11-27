@@ -9,6 +9,25 @@ a {
   color: #00B7FF;
 }
 
+.btn.blueBtn.btn-custom{
+  --bs-btn-color: white;
+  --bs-btn-bg: #3ec5ff
+}
+
+.btn.greenBtn.btn-custom{
+  --bs-btn-color: white;
+  --bs-btn-bg: #adc475
+}
+
+.btn.redBtn.btn-custom{
+  --bs-btn-color: white;
+  --bs-btn-bg: #ff5151
+}
+
+.btn.googleBtn.btn-custom{
+  --bs-btn-bg: #ffffff
+}
+
 /* This section is reserved for the header and footer sections of the page. */
 .navbar-brand img{
   width:3rem;

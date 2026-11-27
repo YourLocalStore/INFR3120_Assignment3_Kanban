@@ -4,13 +4,23 @@ let mongoose = require("mongoose")
 
 let kanban = require("../models/kanban_board")
 
+
+function requireAuth(req, res, next){
+    if(!req.isAuthenticated()){
+        return res.redirect('/login')
+    }
+    next();
+} 
+router.use(requireAuth)
+
 // Read
 router.get("/boards", async(req, res, next) => {
     try{
         const userBoard = await kanban.find();
         res.render("kanban/boards", {
             title: "Board",
-            userBoard:userBoard
+            userBoard:userBoard,
+            displayName: req.user ? req.user.displayName:""
         })
     }
     catch(err){
@@ -27,7 +37,8 @@ router.get("/boards", async(req, res, next) => {
 router.get("/addcolumn", async(req, res, next) => {
     try{
         res.render("kanban/addnew", {
-            title: "Add an Event"
+            title: "Add an Event",
+            displayName: req.user ? req.user.displayName:""
         })
 
     } catch(err) {
@@ -85,7 +96,8 @@ router.get("/addtask/column/:id", async(req, res, next) => {
         }
         res.render("kanban/addtask", {
             title: "Add a task",
-            colToEdit: colToEdit
+            colToEdit: colToEdit,
+            displayName: req.user ? req.user.displayName:""
         })
 
     } catch(err) {
@@ -147,7 +159,8 @@ router.get("/updatetask/column/:colID/task/:taskID", async(req, res, next) => {
 
         res.render("kanban/edit", {
             title: "Update a Task",
-            colTask: colTask
+            colTask: colTask,
+            displayName: req.user ? req.user.displayName:""
         })
 
     } catch(err) {
@@ -211,7 +224,8 @@ router.get("/updatecolname/column/:colID", async(req, res, next) => {
 
         res.render("kanban/edit_colname", {
             title: "Update the Column Name",
-            colName: colToEdit.kanbanColumnName
+            colName: colToEdit.kanbanColumnName,
+            displayName: req.user ? req.user.displayName:""
         })
 
     } catch(err) {

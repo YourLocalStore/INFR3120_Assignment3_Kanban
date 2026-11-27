@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 let createError = require('http-errors');
 let express = require('express');
 let path = require('path');
@@ -8,8 +10,12 @@ let indexRouter = require('../routes/index');
 let usersRouter = require('../routes/users');
 let kanbanRouter = require('../routes/kanban_routes');
 
+let session = require("express-session")
+let passport = require("passport")
+let passportLocal = require("passport-local")
+let flash = require("connect-flash")
+
 let app = express();
-require('dotenv').config()
 
 const mongoose = require("mongoose")
 let kanbanDB = require("./db")
@@ -20,6 +26,22 @@ mongodb.on("error", console.error.bind(console, "Connection Error"));
 mongodb.once("open", () =>{
   console.log("Connected to MongoDB")
 })
+
+app.use(session({
+  secret:"SecretKey",
+  saveUninitialized: false,
+  resave: false
+}))
+
+let userModel = require("../models/user");
+
+app.use(flash());
+passport.serializeUser(userModel.serializeUser());
+passport.deserializeUser(userModel.deserializeUser());
+passport.use(userModel.createStrategy());
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // view engine setup
 app.set('views', path.join(__dirname, '../views'));
