@@ -95,7 +95,7 @@ router.post("/register", async(req, res, next) => {
 router.get('/logout', (req, res, next) => {
   req.logout((err) =>{
     return next(err)
-  })
+  }) 
   res.redirect("/")
 })
 
@@ -117,8 +117,13 @@ router.get('/auth/google/callback',
 // Github Authentication
 router.get('/auth/github',
   passport.authenticate('github', {
-    scope: [ 'user:email' ] 
-  }))
+
+    // https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps
+    scope: [ 
+      'user:email', 
+      'read:user' ]
+    })
+  )
 
 router.get('/auth/github/callback', 
   passport.authenticate('github', {
