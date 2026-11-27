@@ -1,6 +1,4 @@
 let mongoose = require('mongoose')
-let mongooseFindOrCreate = require("mongoose-findorcreate")
-
 let kanbanModel = mongoose.Schema({
 
     // https://stackoverflow.com/questions/53729465
@@ -8,6 +6,11 @@ let kanbanModel = mongoose.Schema({
         type:   mongoose.Schema.Types.ObjectId,
         ref:    "User",
         required: true
+    },
+
+    boardName: {
+        type: String,
+        default: "Untitled Board"
     },
 
     /* 
@@ -22,13 +25,13 @@ let kanbanModel = mongoose.Schema({
     */
     kanbanColumn: [{
         kanbanColumnName: {
-            type: String,
-            required: "Enter the column name"
+            type:       String,
+            required:   "Enter the column name"
         },
         kanbanTask: [{
             kanbanTaskName:{
-                type: String,
-                required: "Enter the task being done"
+                type:       String,
+                required:   "Enter the task being done"
             },
             description: String,
         }]
@@ -38,5 +41,4 @@ let kanbanModel = mongoose.Schema({
     collection: "Boards"
 })
 
-kanbanModel.plugin(mongooseFindOrCreate)
 module.exports = mongoose.model("kanban", kanbanModel)

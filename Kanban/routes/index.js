@@ -1,9 +1,10 @@
-let express = require('express');
-let router = express.Router();
+let express = require('express')
+let router = express.Router()
 
-const passport = require('passport');
-let DB = require('../config/db');
+const passport = require('passport')
+let DB = require('../config/db')
 let User = require('../models/user')
+let authFlag = false
 
 router.get("/login", async(req, res, next) => {
   try{
@@ -11,7 +12,8 @@ router.get("/login", async(req, res, next) => {
       res.render('auth/login', {
         title: "Login",
         message: req.flash("loginMessage"),
-        displayName: req.user ? req.user.displayName:""
+        displayName: req.user ? req.user.displayName:"",
+        authFlag: authFlag
       })
     } else {
         return res.redirect("/boards")
@@ -19,8 +21,8 @@ router.get("/login", async(req, res, next) => {
   }
   catch(err){
     console.log(err)
-    res.render("Books/list", {
-        title: "Edit Book",
+    res.render("auth/login", {
+        title: "Error!",
         error: "Error on Server"
     })
   }
@@ -31,7 +33,8 @@ router.post('/login', (req, res, next) =>{
     if(err){
       return next(err)
     } if(!user){
-      req.flash('loginMessage', "AuthenticationError")
+      authFlag = false
+      req.flash('loginMessage', "Authentication Error - Try again.")
       return res.redirect("/login")
     }
     req.login(user, (err) => {
@@ -73,12 +76,13 @@ router.post("/register", async(req, res, next) => {
     })
 
     await User.register(newUser, req.body.password)
-    req.flash('registerMessage', "Registration Successful!")
+    authFlag = true
+    req.flash('loginMessage', "Registration Successful!")
     return res.redirect("/login")
 
   } catch(err) {
     console.log("Error inserting the new user: ", err)
-    if (err.name==="UserExistsError"){
+    if (err.name === "UserExistsError"){
       req.flash('registerMessage', 'User already exists')
 
     } else {

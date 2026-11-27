@@ -1,9 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let mongoose = require("mongoose")
-
 let kanban = require("../models/kanban_board")
-
 
 function requireAuth(req, res, next){
     if(!req.isAuthenticated()){
@@ -20,9 +18,10 @@ router.get("/boards", async(req, res, next) => {
             boardOwner: req.user._id
         });
         res.render("kanban/boards", {
-            title: "Board",
-            userBoard:userBoard,
-            displayName: req.user ? req.user.displayName:""
+            title:          "Board",
+            userBoard:      userBoard,
+            displayName:    req.user ? req.user.displayName:"",
+            boardOwner:     req.user._id,
         })
     }
     catch(err){
@@ -38,10 +37,15 @@ router.get("/boards", async(req, res, next) => {
 // Create column, which also initiates the board that the user will use.
 router.get("/addcolumn", async(req, res, next) => {
     try{
-        res.render("kanban/addnew", {
-            title: "Add an Event",
-            displayName: req.user ? req.user.displayName:"",
+        const userBoard = await kanban.find({
             boardOwner: req.user._id
+        });
+
+        res.render("kanban/addnew", {
+            title:          "Add a Column",
+            displayName:    req.user ? req.user.displayName:"",
+            boardOwner:     req.user._id,
+            boardTitleExists: userBoard[0] === undefined ? false : true
         })
 
     } catch(err) {
@@ -74,6 +78,7 @@ router.post("/addcolumn", async(req, res, next) => {
         } else{
             kanbanBoard = kanban({
                 boardOwner: req.user._id,
+                boardName: req.body.kTitle,
                 kanbanColumn: [{
                     kanbanColumnName: req.body.kColName
                 }]
@@ -197,7 +202,9 @@ router.post("/updatetask/column/:colID/task/:taskID", async(req, res, next) => {
         const colID = req.params.colID
         const taskID = req.params.taskID
 
-        let boardToFind = await kanban.findOne()
+        let boardToFind = await kanban.findOne({
+            boardOwner: req.user._id
+        }) 
         let colToEdit;
 
         for(let i = 0; i < boardToFind.kanbanColumn.length; i++){
@@ -206,8 +213,8 @@ router.post("/updatetask/column/:colID/task/:taskID", async(req, res, next) => {
             }
         }
 
-        let colTask = colToEdit.kanbanTask.find(task => 
-            task._id.toString() == taskID
+        let colTask = colToEdit.kanbanTask.find(
+            task => task._id.toString() == taskID
         )
 
         // We only need to call 'colTask' and its properties because it directly references the kanbanTask array.
@@ -298,6 +305,55 @@ router.post("/updatecolname/column/:colID", async(req, res, next) => {
     }
 })
 
+// Update the Board Name
+router.get("/updateboardname/board/:boardID", async(req, res, next) => {
+    try{
+        let boardToFind = await kanban.findOne({
+            boardOwner: req.user._id
+        })
+
+        res.render("kanban/edit_colname", {
+            title: "Update the Board Title",
+            board: boardToFind,
+            displayName: req.user ? req.user.displayName:"",
+            boardOwner: req.user._id
+        })
+
+    } catch(err) {
+        console.log(err)
+        res.render("kanban/addnew", {
+            title: "Error!",
+            error: err
+        })
+    }
+})
+
+router.post("/updateboardname/board/:boardID", async(req, res, next) => {
+    try{
+        let boardToFind = await kanban.findOne({
+            boardOwner: req.user._id
+        })
+
+        // We only need to call 'colTask' and its properties because it directly references the kanbanTask array.
+        boardToFind.boardName = req.body.kTitle
+
+        await kanban.findByIdAndUpdate({
+                _id: boardToFind._id, 
+                boardOwner: req.user._id
+            }, 
+            {boardName: boardToFind.boardName}
+        )
+        res.redirect("/boards")
+
+    } catch(err) {
+        console.log(err)
+        res.render("kanban/addnew", {
+            title: "Error!",
+            error: err
+        })
+    }
+})
+
 // Delete Entire Board (The DB entry)
 router.get("/deleteboard/:id", async(req, res, next) => {
     try{
@@ -367,7 +423,7 @@ router.get("/deletetask/column/:colID/task/:taskID", async(req, res, next) => {
                 colToEdit = boardToFind.kanbanColumn[i]
             }
         }
-        
+
         colToEdit.kanbanTask = colToEdit.kanbanTask.filter(
             task => task._id.toString() != taskID // Exclude the task that we want to filter out
         )

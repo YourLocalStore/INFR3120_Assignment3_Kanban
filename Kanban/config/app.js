@@ -13,6 +13,7 @@ let kanbanRouter = require('../routes/kanban_routes');
 let session = require("express-session")
 let passport = require("passport")
 let passportLocal = require("passport-local")
+let mongooseFindOrCreate = require("mongoose-findorcreate")
 let flash = require("connect-flash")
 
 // https://www.passportjs.org/packages/passport-google-oauth20/
@@ -40,14 +41,23 @@ app.use(session({
 let userModel = require("../models/user");
 
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    clientID: process.env.GOOGLE_CLIENT_ID_LOCAL,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET_LOCAL,
     callbackURL: "https://infr3120-assignment3-kanban.onrender.com/auth/google/callback"
+    // callbackURL: "http://127.0.0.1:3000/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-    userModel.findOrCreate({ googleId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
+
+    // https://www.passportjs.org/reference/normalized-profile/
+    userModel.findOrCreate(
+      { googleId: profile.id }, {
+        username: `google_user_${profile.id}`,
+        email: profile.emails[0].value,
+        displayName: profile.displayName
+      }, 
+      function (err, user) {
+        return cb(err, user);
+      }); 
   }
 ));
 

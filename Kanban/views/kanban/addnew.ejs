@@ -1,4 +1,3 @@
-<%- include ../partials/main_nav.ejs %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -11,25 +10,35 @@
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
   </head>
   <body>
+    <%- include ../partials/main_nav.ejs %>
     <div class="container-fluid">
       <div class="row">
+
         <div class="col-md-6 mt-3">
           <h1 class="mb-3"><%= title %></h1>
 
-          <form class="form" method="post">
+          <form class="form" method="post">  
+            
+            <% if (!boardTitleExists) { %>
+              <div class="form-group">
+                <label for="titleTextField"> Board Title </label>
+                <input type="text" class="form-control mt-2 mb-3" id="titleTextField"
+                        placeholder="Board Title"
+                        name="kTitle"></div>
+            <% } %>
             <div class="form-group">
-              <label for="nameTextField">Column Name</label>
+              <label for="nameTextField"> Column Name </label>
               <input type="text" class="form-control mt-2" id="nameTextField"
-                      placeholder="Enter a column name..."
+                      placeholder="Column Name"
                       name="kColName" required></div>
 
-          <button class="btn btn-dark mt-3" type="submit">Submit</button>
-          <a href="/boards" class="btn btn-warning mt-3">Go Back!</a>            
+            <button class="btn btn-dark mt-3" type="submit">Submit</button>
+            <a href="/boards" class="btn btn-warning mt-3">Go Back!</a>            
           </form>
 
         </div>
       </div>
     </div>
-  </body>
   <%- include ../partials/footer.ejs %>
+  </body>
 </html>
