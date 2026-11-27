@@ -1,4 +1,5 @@
 let mongoose = require('mongoose')
+let mongooseFindOrCreate = require("mongoose-findorcreate")
 
 let kanbanModel = mongoose.Schema({
 
@@ -37,4 +38,5 @@ let kanbanModel = mongoose.Schema({
     collection: "Boards"
 })
 
+kanbanModel.plugin(mongooseFindOrCreate)
 module.exports = mongoose.model("kanban", kanbanModel)

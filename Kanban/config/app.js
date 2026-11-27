@@ -39,18 +39,13 @@ app.use(session({
 
 let userModel = require("../models/user");
 
-app.use(flash());
-passport.serializeUser(userModel.serializeUser());
-passport.deserializeUser(userModel.deserializeUser());
-passport.use(userModel.createStrategy());
-
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: "https://infr3120-assignment3-kanban.onrender.com/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    userModel.findOrCreate({ googleId: profile.id }, function (err, user) {
       return cb(err, user);
     });
   }
