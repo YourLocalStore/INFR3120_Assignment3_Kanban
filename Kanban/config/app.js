@@ -69,13 +69,13 @@ passport.use(new GitHubStrategy({
     callbackURL: "https://infr3120-assignment3-kanban.onrender.com/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log(profile)
+    email = (profile.emails[0].value === null ? null : profile.emails[0].value)
     userModel.findOrCreate({ 
       githubId: profile.id 
     }, 
     {
       username: `github_user_${profile.id}`,
-      email: profile.emails[0].value,
+      email: email,
       displayName: profile.displayName
     }, 
     function (err, user) {
