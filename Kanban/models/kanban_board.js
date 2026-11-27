@@ -2,6 +2,13 @@ let mongoose = require('mongoose')
 
 let kanbanModel = mongoose.Schema({
 
+    // https://stackoverflow.com/questions/53729465
+    boardOwner: {
+        type:   mongoose.Schema.Types.ObjectId,
+        ref:    "User",
+        required: true
+    },
+
     /* 
     EXAMPLE OF THE JSON SCHEMA
 

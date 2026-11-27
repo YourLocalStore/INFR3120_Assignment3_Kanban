@@ -16,7 +16,9 @@ router.use(requireAuth)
 // Read
 router.get("/boards", async(req, res, next) => {
     try{
-        const userBoard = await kanban.find();
+        const userBoard = await kanban.find({
+            boardOwner: req.user._id
+        });
         res.render("kanban/boards", {
             title: "Board",
             userBoard:userBoard,
@@ -38,7 +40,8 @@ router.get("/addcolumn", async(req, res, next) => {
     try{
         res.render("kanban/addnew", {
             title: "Add an Event",
-            displayName: req.user ? req.user.displayName:""
+            displayName: req.user ? req.user.displayName:"",
+            boardOwner: req.user._id
         })
 
     } catch(err) {
@@ -52,7 +55,9 @@ router.get("/addcolumn", async(req, res, next) => {
 
 router.post("/addcolumn", async(req, res, next) => {
     try{
-        let kanbanBoard = await kanban.findOne(); // The "board" in this sense is the singular DB entry the user makes
+        let kanbanBoard = await kanban.findOne({
+            boardOwner: req.user._id
+        }); // The "board" in this sense is the singular DB entry the user makes
         
         // If the DB entry for this user's board exists
         if(kanbanBoard){
@@ -60,11 +65,15 @@ router.post("/addcolumn", async(req, res, next) => {
             kanbanBoard.kanbanColumn = kanbanBoard.kanbanColumn.concat({
                 kanbanColumnName: req.body.kColName,
             })
-            await kanban.updateOne(kanbanBoard)
+            await kanban.updateOne(
+                {boardOwner: req.user._id}, // Filter
+                kanbanBoard                 // Update
+            )
         
         // Otherwise, they do not have a board.
         } else{
             kanbanBoard = kanban({
+                boardOwner: req.user._id,
                 kanbanColumn: [{
                     kanbanColumnName: req.body.kColName
                 }]
@@ -75,7 +84,7 @@ router.post("/addcolumn", async(req, res, next) => {
 
     } catch(err) {
         console.log(err)
-        res.render("kanban/addcolumn", {
+        res.render("kanban/addnew", {
             title: "Error!",
             error: err
         })
@@ -86,7 +95,9 @@ router.post("/addcolumn", async(req, res, next) => {
 router.get("/addtask/column/:id", async(req, res, next) => {
     try{
         const colID = req.params.id
-        let boardToFind = await kanban.findOne() 
+        let boardToFind = await kanban.findOne({
+            boardOwner: req.user._id
+        }) 
         let colToEdit;
 
         for(let i = 0; i < boardToFind.kanbanColumn.length; i++){
@@ -97,7 +108,8 @@ router.get("/addtask/column/:id", async(req, res, next) => {
         res.render("kanban/addtask", {
             title: "Add a task",
             colToEdit: colToEdit,
-            displayName: req.user ? req.user.displayName:""
+            displayName: req.user ? req.user.displayName:"",
+            boardOwner: req.user._id
         })
 
     } catch(err) {
@@ -112,7 +124,9 @@ router.get("/addtask/column/:id", async(req, res, next) => {
 router.post("/addtask/column/:id", async(req, res, next) => {
     try{
         const colID = req.params.id
-        let boardToFind = await kanban.findOne()
+        let boardToFind = await kanban.findOne({
+            boardOwner: req.user._id
+        }) 
         let colToEdit;
 
         for(let i = 0; i < boardToFind.kanbanColumn.length; i++){
@@ -124,9 +138,12 @@ router.post("/addtask/column/:id", async(req, res, next) => {
             kanbanTaskName: req.body.kColTask,
             description:    req.body.kColDescription    
         })
-        await kanban.findByIdAndUpdate(boardToFind._id, {
-            kanbanColumn: boardToFind.kanbanColumn
-        })
+        await kanban.findByIdAndUpdate({
+                _id: boardToFind._id, 
+                boardOwner: req.user._id
+            }, 
+            {kanbanColumn: boardToFind.kanbanColumn}
+        )
         res.redirect("/boards")
 
     } catch(err) {
@@ -144,7 +161,9 @@ router.get("/updatetask/column/:colID/task/:taskID", async(req, res, next) => {
         const colID = req.params.colID
         const taskID = req.params.taskID
 
-        let boardToFind = await kanban.findOne()
+        let boardToFind = await kanban.findOne({
+            boardOwner: req.user._id
+        }) 
         let colToEdit;
 
         for(let i = 0; i < boardToFind.kanbanColumn.length; i++){
@@ -153,14 +172,15 @@ router.get("/updatetask/column/:colID/task/:taskID", async(req, res, next) => {
             }
         }
 
-        let colTask = colToEdit.kanbanTask.find(task => 
-            task._id.toString() == taskID
+        let colTask = colToEdit.kanbanTask.find(
+            task => task._id.toString() == taskID
         )
 
         res.render("kanban/edit", {
             title: "Update a Task",
             colTask: colTask,
-            displayName: req.user ? req.user.displayName:""
+            displayName: req.user ? req.user.displayName:"",
+            boardOwner: req.user._id
         })
 
     } catch(err) {
@@ -194,9 +214,12 @@ router.post("/updatetask/column/:colID/task/:taskID", async(req, res, next) => {
         colTask.kanbanTaskName = req.body.kColTask
         colTask.description    = req.body.kColDescription
 
-        await kanban.findByIdAndUpdate(boardToFind._id, {
-            kanbanColumn: boardToFind.kanbanColumn
-        })
+        await kanban.findByIdAndUpdate({
+                _id: boardToFind._id, 
+                boardOwner: req.user._id
+            }, 
+            {kanbanColumn: boardToFind.kanbanColumn}
+        )
         res.redirect("/boards")
 
     } catch(err) {
@@ -213,7 +236,9 @@ router.get("/updatecolname/column/:colID", async(req, res, next) => {
     try{
         const colID = req.params.colID
 
-        let boardToFind = await kanban.findOne()
+        let boardToFind = await kanban.findOne({
+            boardOwner: req.user._id
+        })
         let colToEdit;
 
         for(let i = 0; i < boardToFind.kanbanColumn.length; i++){
@@ -225,7 +250,8 @@ router.get("/updatecolname/column/:colID", async(req, res, next) => {
         res.render("kanban/edit_colname", {
             title: "Update the Column Name",
             colName: colToEdit.kanbanColumnName,
-            displayName: req.user ? req.user.displayName:""
+            displayName: req.user ? req.user.displayName:"",
+            boardOwner: req.user._id
         })
 
     } catch(err) {
@@ -241,7 +267,9 @@ router.post("/updatecolname/column/:colID", async(req, res, next) => {
     try{
         const colID = req.params.colID
 
-        let boardToFind = await kanban.findOne()
+        let boardToFind = await kanban.findOne({
+            boardOwner: req.user._id
+        })
         let colToEdit;
 
         for(let i = 0; i < boardToFind.kanbanColumn.length; i++){
@@ -253,9 +281,12 @@ router.post("/updatecolname/column/:colID", async(req, res, next) => {
         // We only need to call 'colTask' and its properties because it directly references the kanbanTask array.
         colToEdit.kanbanColumnName = req.body.kColName
 
-        await kanban.findByIdAndUpdate(boardToFind._id, {
-            kanbanColumn: boardToFind.kanbanColumn
-        })
+        await kanban.findByIdAndUpdate({
+                _id: boardToFind._id, 
+                boardOwner: req.user._id
+            }, 
+            {kanbanColumn: boardToFind.kanbanColumn}
+        )
         res.redirect("/boards")
 
     } catch(err) {
@@ -271,7 +302,11 @@ router.post("/updatecolname/column/:colID", async(req, res, next) => {
 router.get("/deleteboard/:id", async(req, res, next) => {
     try{
         let boardID  = req.params.id
-        await kanban.deleteOne({_id: boardID})
+        await kanban.deleteOne({
+                _id: boardID,
+                boardOwner: req.user._id
+            }
+        )
         await res.redirect("/boards")
 
     } catch(err) {
@@ -287,14 +322,20 @@ router.get("/deleteboard/:id", async(req, res, next) => {
 router.get("/deletecolumn/:id", async(req, res, next) => {
     try{
         let colID  = req.params.id
-        let boardToFind = await kanban.findOne()
-
-        boardToFind.kanbanColumn = boardToFind.kanbanColumn.filter(column => 
-            column._id.toString() != colID
-        )
-        await kanban.findByIdAndUpdate(boardToFind._id, {
-            kanbanColumn: boardToFind.kanbanColumn
+        let boardToFind = await kanban.findOne({
+            boardOwner: req.user._id
         })
+
+        boardToFind.kanbanColumn = boardToFind.kanbanColumn.filter(
+            column => column._id.toString() != colID
+        )
+
+        await kanban.findByIdAndUpdate({
+                _id: boardToFind._id, 
+                boardOwner: req.user._id
+            }, 
+            {kanbanColumn: boardToFind.kanbanColumn}
+        )
         res.redirect("/boards")
 
     } catch(err) {
@@ -312,7 +353,9 @@ router.get("/deletetask/column/:colID/task/:taskID", async(req, res, next) => {
         let colID  = req.params.colID
         let taskID = req.params.taskID
 
-        let boardToFind = await kanban.findOne()
+        let boardToFind = await kanban.findOne({
+            boardOwner: req.user._id
+        })
         let colToEdit;
 
         /*
@@ -324,12 +367,17 @@ router.get("/deletetask/column/:colID/task/:taskID", async(req, res, next) => {
                 colToEdit = boardToFind.kanbanColumn[i]
             }
         }
-        colToEdit.kanbanTask = colToEdit.kanbanTask.filter(task => 
-            task._id.toString() != taskID // Exclude the task that we want to filter out
+        
+        colToEdit.kanbanTask = colToEdit.kanbanTask.filter(
+            task => task._id.toString() != taskID // Exclude the task that we want to filter out
         )
-        await kanban.findByIdAndUpdate(boardToFind._id, {
-            kanbanColumn: boardToFind.kanbanColumn
-        })
+
+        await kanban.findByIdAndUpdate({
+                _id: boardToFind._id, 
+                boardOwner: req.user._id
+            }, 
+            {kanbanColumn: boardToFind.kanbanColumn}
+        )
         res.redirect("/boards")
 
     } catch(err) {
