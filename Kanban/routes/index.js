@@ -101,9 +101,9 @@ router.get('/logout', (req, res, next) => {
 
 // Google Authentication
 router.get('/auth/google',
-  passport.authenticate('google', 
-    { scope: ['profile', 'email'] }
-  ))
+  passport.authenticate('google', {
+    scope: ['profile', 'email']
+  }))
 
 router.get('/auth/google/callback', 
   passport.authenticate('google', {
@@ -112,6 +112,21 @@ router.get('/auth/google/callback',
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/boards');
+  })
+
+// Github Authentication
+router.get('/auth/github',
+  passport.authenticate('github', {
+    scope: [ 'user:email' ] 
+  }))
+
+router.get('/auth/github/callback', 
+  passport.authenticate('github', {
+    failureRedirect: '/login'
+  }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/')
   })
 
 /* GET home page. */

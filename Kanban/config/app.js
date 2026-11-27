@@ -18,7 +18,7 @@ let flash = require("connect-flash")
 
 // https://www.passportjs.org/packages/passport-google-oauth20/
 let GoogleStrategy = require('passport-google-oauth20').Strategy;
-// let GitHubStrategy = require('passport-github2').Strategy;
+let GitHubStrategy = require('passport-github2').Strategy;
 
 let app = express();
 
@@ -49,29 +49,39 @@ passport.use(new GoogleStrategy({
   function(accessToken, refreshToken, profile, cb) {
 
     // https://www.passportjs.org/reference/normalized-profile/
-    userModel.findOrCreate(
-      { googleId: profile.id }, {
-        username: `google_user_${profile.id}`,
-        email: profile.emails[0].value,
-        displayName: profile.displayName
-      }, 
-      function (err, user) {
-        return cb(err, user);
-      }); 
+    userModel.findOrCreate({ 
+      googleId: profile.id 
+    }, 
+    {
+      username: `google_user_${profile.id}`,
+      email: profile.emails[0].value,
+      displayName: profile.displayName
+    }, 
+    function (err, user) {
+      return cb(err, user);
+    }); 
   }
 ));
 
-// passport.use(new GitHubStrategy({
-//     clientID: process.env.GITHUB_CLIENT_ID,
-//     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-//     callbackURL: "http://127.0.0.1:3000/auth/github/callback"
-//   },
-//   function(accessToken, refreshToken, profile, done) {
-//     User.findOrCreate({ githubId: profile.id }, function (err, user) {
-//       return done(err, user);
-//     });
-//   }
-// ));
+passport.use(new GitHubStrategy({
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: "http://127.0.0.1:3000/auth/github/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    userModel.findOrCreate({ 
+      githubId: profile.id 
+    }, 
+    {
+      username: `github_user_${profile.id}`,
+      email: profile.emails[0].value,
+      displayName: profile.displayName
+    }, 
+    function (err, user) {
+      return done(err, user);
+    });
+  }
+));
 
 app.use(flash());
 passport.serializeUser(userModel.serializeUser());
