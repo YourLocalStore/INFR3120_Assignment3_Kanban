@@ -64,18 +64,40 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.use(new GitHubStrategy({
-    clientID: process.env.GITHUB_CLIENT_ID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    clientID: process.env.GITHUB_CLIENT_ID_LOCAL,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET_LOCAL,
     callbackURL: "https://infr3120-assignment3-kanban.onrender.com/auth/github/callback"
+    // callbackURL: "http://127.0.0.1:3000/auth/github/callback"
   },
-  function(accessToken, refreshToken, profile, done) {
-    email = (profile.emails[0].value === null ? null : profile.emails[0].value)
+
+  async function(accessToken, refreshToken, profile, done) {
+
+    // https://docs.github.com/en/enterprise-server@3.23/rest/users/emails?apiVersion=2026-03-10
+    try{
+      const response = await fetch("https://api.github.com/user/emails", 
+        {
+          headers: {
+            Accept: "application/vnd.github+json",
+            Authorization: `Bearer ${accessToken}`,
+            'X-GitHub-Api-Version': '2026-03-10'
+          }
+        }
+      ) 
+      const emailList = await response.json()
+      userEmail = emailList.find(e => (e.primary && e.verified)).email // Primary Github Email
+      if(!userEmail){
+        userEmail = emailList.find(e => (!e.primary && e.verified)).email // The verified email that Github provides, by default.
+      }
+    } catch(err) {
+        return done(err)
+    }
+
     userModel.findOrCreate({ 
       githubId: profile.id 
     }, 
     {
       username: `github_user_${profile.id}`,
-      email: email,
+      email: userEmail,
       displayName: profile.displayName
     }, 
     function (err, user) {
