@@ -41,8 +41,8 @@ app.use(session({
 let userModel = require("../models/user");
 
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID_LOCAL,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET_LOCAL,
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: "https://infr3120-assignment3-kanban.onrender.com/auth/google/callback"
     // callbackURL: "http://127.0.0.1:3000/auth/google/callback"
   },
