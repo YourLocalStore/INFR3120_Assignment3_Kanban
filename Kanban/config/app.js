@@ -64,8 +64,8 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.use(new GitHubStrategy({
-    clientID: process.env.GITHUB_CLIENT_ID_LOCAL,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET_LOCAL,
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: "https://infr3120-assignment3-kanban.onrender.com/auth/github/callback"
     // callbackURL: "http://127.0.0.1:3000/auth/github/callback"
   },
