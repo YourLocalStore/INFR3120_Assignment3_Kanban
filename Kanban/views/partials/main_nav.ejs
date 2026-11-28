@@ -3,7 +3,7 @@
         <img src="/images/kb_logo.png">
     </a>
     <div class="container-fluid">
-        <ul class="navbar-nav mb-1 fs-6 gap-2 me-auto">
+        <ul class="mainNav navbar-nav mb-1 fs-6 gap-2 me-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/">Home</a>
             </li>
@@ -18,8 +18,41 @@
             <li class="nav-item">
                 <a class="nav-link" href="/contactus">Contact</a>
             </li>
-
         </ul>
+        
+        <div class="mdBreakpointNav collapse navbar-collapse">
+            <ul class=" navbar-nav">
+                <li class="nav-item dropdown">
+                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                                href="/">Home</a>
+                        </li>  
+
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                                href="/boards">Board</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                                href="/about">About</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" 
+                                href="/contactus">Contact</a>
+                        </li>   
+
+                    </ul>
+
+                </li>                       
+            </ul>
+        </div>
 
         <ul class="navbar-nav ms-auto me-3">
             <% if(typeof displayName == "string" && displayName){ %>

@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
-        <link rel='stylesheet' href='/stylesheets/style.css' />
-        <link rel='stylesheet' href='/bootstrap/dist/css/bootstrap.min.css' />
+        <link rel='stylesheet' href='/stylesheets/style.css'>
+        <link rel='stylesheet' href='/stylesheets/media.css'>
+        <link rel='stylesheet' href='/bootstrap/dist/css/bootstrap.min.css'>
         <link rel="stylesheet" href="/fontawesome-free-7.3.1-web/css/fontawesome.min.css">
-        <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
         <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <%- include ../partials/main_nav.ejs %>
-        <main class="container-fluid mt-3 w-75 text-start">
-
-            <div class="row mt-3 text-center">
-                <h1>Login</h1>
-                <p>Sign in to view your own board!</p>
-            </div>
-
-            <div class="row bg-dark rounded">
+        <%- include ../partials/main_nav.ejs %>       
+        <main class="container-fluid mt-3 w-100 text-start d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 356px);">
+            <div class="row bg-dark rounded w-75">
                 <div class="col-12 col-md-6">
-                    <div class="form-container pt-3 pb-3 text-white">                      
+                    <div class="form-container pt-3 pb-3 text-white">  
+
+                        <div class="row">
+                            <div class="col-12 mt-3 mb-3">
+                                <h1>Login</h1>
+                                <p>Sign in to view your own board!</p>
+                                <hr>
+                            </div>
+                        </div>      
+
                         <form method="post" autocomplete="off">
 
                             <% if(message.length > 0 && !authFlag) {%>
@@ -59,6 +63,8 @@
                             </div>
                         </form>
 
+                        <hr>
+
                         <form action="/auth/google" method="GET">
                             <button type="submit" class="btn btn-custom googleBtn w-100 mb-3"> 
                                 <i class="fa-brands fa-google me-3"></i>Login with Google
@@ -78,9 +84,9 @@
                     </a>                       
                 </div>            
                 
-                <div class="col-12 col-md-6 rounded" 
+                <div class="signInCard col-12 col-md-6 rounded" 
                     style="background: linear-gradient(to left, black, transparent 50%), 
-                            url('/images/baltzericehat.jpg') no-repeat; 
+                            url('/images/login.png') no-repeat; 
                             background-position: center; 
                             background-size: cover;">
                 </div>

@@ -25,7 +25,7 @@ a {
 }
 
 .btn.googleBtn.btn-custom{
-  --bs-btn-bg: #ffffff
+  --bs-btn-bg: white
 }
 
 /* This section is reserved for the header and footer sections of the page. */

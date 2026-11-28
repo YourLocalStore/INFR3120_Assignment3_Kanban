@@ -2,27 +2,31 @@
 <html>
   <head>
     <link rel="stylesheet" href="/fontawesome-free-7.3.1-web/css/fontawesome.min.css">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel='stylesheet' href='/bootstrap/dist/css/bootstrap.min.css'/>
+    <link rel='stylesheet' href='/stylesheets/style.css'>
+    <link rel='stylesheet' href='/stylesheets/media.css'>
+    <link rel='stylesheet' href='/bootstrap/dist/css/bootstrap.min.css'>
     <script src="/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
 
   <%- include("../partials/main_nav.ejs") %>
   <body>
 
-    <div class="contact-form container-fluid pt-3 pb-3 w-75 text-center">
-      <div class="row">
-        <div class="mt-3 text-dark">
-          <h3>Contact Us!</h3>
-          <p>Have any comments? Let us know!</p>
-        </div>
-      </div>
-
-      <div class="row bg-dark rounded">
+    <div class="container-fluid mt-3 w-100 text-start d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 356px);">
+      <div class="row bg-dark rounded w-75">
         <div class="col-12 col-md-6">
           <div class="form-container pt-3 pb-3 text-white">
+
+            <div class="row">
+              <div class="col-12 mt-3 mb-3">
+                <h3>Contact Us!</h3>
+                <p>Have any comments? Let us know!</p>
+                <hr>
+              </div>
+            </div>         
+            
             <form action="mailto:" 
                   method="post" 
                   enctype="text/plain"
@@ -52,7 +56,7 @@
                           class="form-control w-100 mx-auto" style="min-height: 200px;"
                           name="comments" placeholder="Questions, concerns, feedback..."></textarea>
               </div>
-              <button type="submit" class="btn btn-success">Submit</button>
+              <button type="submit" class="btn btn-custom greenBtn">Submit</button>
               <hr>
 
             </form>
@@ -73,7 +77,7 @@
 
         <div class="col-12 col-md-6 rounded" 
               style="background: linear-gradient(to left, black, transparent 50%), 
-                      url('/images/baltzericehat.jpg') no-repeat; 
+                      url('/images/contact.png') no-repeat; 
                       background-position: center; 
                       background-size: cover;">
         </div>

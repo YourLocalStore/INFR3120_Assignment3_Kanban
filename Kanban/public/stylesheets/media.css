@@ -1,0 +1,48 @@
+/* 
+    Media queries are used here to only hide/show specific content from each view, or fix any possible issues
+    that each breakpoint might have when displaying certain content.
+
+    Each breakpoint that Bootstrap uses is described here:
+        https://getbootstrap.com/docs/5.2/layout/breakpoints/
+*/
+
+/* FOR THE 'XS' BREAKPOINT */
+@media only screen and (max-width:575px) {
+    .mainNav li{
+        display:none
+    }
+
+    .mdBreakpointNav{
+        margin-left: -20px !important
+    }
+
+}
+
+/* FOR THE 'SM' BREAKPOINT */
+@media only screen and (min-width:576px) and (max-width:767px) {
+    .mainNav li{
+        display:none
+    }
+    .mdBreakpointNav{
+        margin-left: -20px !important
+    }
+}
+
+
+/* FOR THE 'MD' BREAKPOINT */
+@media only screen and (min-width:768px) and (max-width:991px) {
+    .mainNav li{
+        display:none
+    }
+    .mdBreakpointNav{
+        margin-left: -20px !important
+    }
+
+}
+
+/* FOR THE 'LG' BREAKPOINT */
+@media only screen and (min-width:992px){
+    .mdBreakpointNav .navbar-nav .nav-item button{
+        display: none
+    }
+}
