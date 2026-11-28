@@ -111,7 +111,7 @@ router.get("/addtask/column/:id", async(req, res, next) => {
             }
         }
         res.render("kanban/addtask", {
-            title: "Add a task",
+            title: "Add a Task",
             colToEdit: colToEdit,
             displayName: req.user ? req.user.displayName:"",
             boardOwner: req.user._id
